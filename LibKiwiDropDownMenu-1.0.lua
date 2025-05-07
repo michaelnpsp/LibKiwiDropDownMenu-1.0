@@ -79,7 +79,7 @@ do
 			end
 			tables[#tables+1] = item; wipe(item)
 		end
-		wipeMenu(menu)
+		lib:wipeMenu(menu)
 	end
 	-- add an item to the menu
 	function lib:defMenuAdd(menu, text, value, menuList)
