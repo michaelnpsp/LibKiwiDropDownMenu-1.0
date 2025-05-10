@@ -45,9 +45,9 @@ do
 		local count = #menu
 		if count>1 then
 			max = math.ceil( count / math.ceil( count / (max or 28) ) )
-			fsort = fsort or 'text'
-			fdisp = fdisp or fsort
-			table.sort(menu, function(a,b) return a[fsort]<b[fsort] end )
+			fsort = fsort==nil and 'text' or fsort
+			fdisp = fdisp or fsort or 'text'
+			if fsort~=false then table.sort(menu, function(a,b) return a[fsort]<b[fsort] end ) 	end
 			local items, first, last
 			if count>max then
 				for i=1,count do
@@ -202,6 +202,7 @@ do
 					end
 					if item.menuList then
 						item.hasArrow = true
+						if type(item.menuList)=='function' then item.menuList = item.menuList(frame, level) end
 					end
 					if item.default then -- default values for the child menuList
 						item.value, item.default = {__kwDefault = item.default}, nil
