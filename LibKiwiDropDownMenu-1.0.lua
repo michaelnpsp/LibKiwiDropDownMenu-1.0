@@ -36,6 +36,13 @@ do
 	local function strfirstword(str)
 		return strmatch(str, "^(.-) ") or str
 	end
+	-- insert menu
+	function lib:insertMenu(src, dst, idx)
+		idx = idx or #dst+1
+		for i,item in ipairs(src) do
+			table.insert(dst, idx+i-1, item)
+		end
+	end
 	-- clear menu table, preserving special control fields
 	function lib:wipeMenu(menu)
 		local init = menu.init;	wipe(menu); menu.init = init
@@ -44,7 +51,8 @@ do
 	function lib:splitMenu(menu, fsort, fdisp, max)
 		local count = #menu
 		if count>1 then
-			max = math.ceil( count / math.ceil( count / (max or 28) ) )
+			max = max or 28
+			max = max>0 and math.ceil( count / math.ceil( count/max ) ) or -max
 			fsort = fsort==nil and 'text' or fsort
 			fdisp = fdisp or fsort or 'text'
 			if fsort~=false then table.sort(menu, function(a,b) return a[fsort]<b[fsort] end ) 	end
@@ -80,6 +88,7 @@ do
 			tables[#tables+1] = item; wipe(item)
 		end
 		lib:wipeMenu(menu)
+		return menu
 	end
 	-- add an item to the menu
 	function lib:defMenuAdd(menu, text, value, menuList)
